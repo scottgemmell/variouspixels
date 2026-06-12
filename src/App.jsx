@@ -48,7 +48,6 @@ const EMAIL = 'variouspixels' + String.fromCharCode(64) + 'gmail.com'
 const VERSIONS = [
   ['v1', 'https://v1.variouspixels.com'],
   ['v2', 'https://v2.variouspixels.com'],
-  ['v3', 'https://v3.variouspixels.com'],
 ]
 
 export default function App() {
