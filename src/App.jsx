@@ -45,9 +45,10 @@ const sampleGradient = (c, r, w, h) => {
 
 const EMAIL = 'variouspixels' + String.fromCharCode(64) + 'gmail.com'
 
+// href null marks the version this site is — rendered as a static label, not a link
 const VERSIONS = [
   ['v1', 'https://v1.variouspixels.com'],
-  ['v2', 'https://v2.variouspixels.com'],
+  ['v2', null],
 ]
 
 export default function App() {
@@ -152,15 +153,24 @@ export default function App() {
 
       {/* Version links — 30×30 lattice cells, two rows above the bottom */}
       <div className="absolute flex left-cell" style={{ top: versionsTop }}>
-        {VERSIONS.map(([label, href]) => (
-          <a
-            key={label}
-            href={href}
-            className="box-border flex size-cell items-center justify-center font-mono text-[11px] no-underline text-[rgba(26,26,26,0.4)] border-2 border-transparent hover:text-ink hover:font-bold hover:border-ink hover:bg-[rgba(26,26,26,0.07)]"
-          >
-            {label}
-          </a>
-        ))}
+        {VERSIONS.map(([label, href]) =>
+          href ? (
+            <a
+              key={label}
+              href={href}
+              className="box-border flex size-cell items-center justify-center font-mono text-[11px] no-underline text-[rgba(26,26,26,0.4)] border-2 border-transparent hover:text-ink hover:font-bold hover:border-ink hover:bg-[rgba(26,26,26,0.07)]"
+            >
+              {label}
+            </a>
+          ) : (
+            <span
+              key={label}
+              className="box-border flex size-cell items-center justify-center font-mono text-[11px] font-bold text-ink border-2 border-transparent"
+            >
+              {label}
+            </span>
+          ),
+        )}
       </div>
     </div>
   )
