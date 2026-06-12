@@ -16,8 +16,12 @@ const GRAD_STOPS = [
   [360, '#d62828'],
 ]
 
-// Snap a value to the 30px lattice; −1 so the edge coincides with the 1px hairline.
+// Snap a position to the 30px lattice; −1 so the edge coincides with the 1px hairline.
 const snap = (v) => Math.max(29, Math.round(v / CELL) * CELL - 1)
+
+// Snap a size so the far border also lands on a hairline: with the near edge at
+// n*30−1, the size must be a multiple of 30 plus 1 for the far edge to reach m*30.
+const snapSize = (v) => Math.max(CELL + 1, Math.round(v / CELL) * CELL + 1)
 
 const mixHex = (a, b, t) => {
   const pa = parseInt(a.slice(1), 16)
@@ -90,8 +94,8 @@ export default function App() {
   const box = {
     left: snap(w * 0.08),
     top: snap(h * 0.16),
-    width: snap(wordmarkSize * 11.6 + 60),
-    height: snap(wordmarkSize * 2.1),
+    width: snapSize(wordmarkSize * 11.6 + 60),
+    height: snapSize(wordmarkSize * 2.1),
   }
   const versionsTop = (Math.floor(h / CELL) - 2) * CELL
 
