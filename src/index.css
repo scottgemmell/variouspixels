@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #ffd700;
+  --color-ink: #1a1a1a;
+  --color-trail-red: #d62828;
+  --color-trail-terracotta: #c0653f;
+  --color-trail-orange: #e8742c;
+  --color-trail-amber: #eda118;
+  --color-trail-midnight: #1c2752;
+  --spacing-cell: 30px;
+  --font-silkscreen: "Silkscreen", monospace;
+  --font-mono: "Space Mono", monospace;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--color-gold);
+  -webkit-font-smoothing: antialiased;
+}
