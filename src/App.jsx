@@ -51,8 +51,8 @@ const EMAIL = 'variouspixels' + String.fromCharCode(64) + 'gmail.com'
 
 // href null marks the version this site is — rendered as a static label, not a link
 const VERSIONS = [
-  ['v1', 'https://v1.variouspixels.com'],
-  ['v2', null],
+  ['v1', 'https://v1.variouspixels.com', 'View version 1 — the original variouspixels.com'],
+  ['v2', null, 'Version 2 — the current site'],
 ]
 
 export default function App() {
@@ -103,6 +103,7 @@ export default function App() {
     <div className="fixed inset-0 overflow-hidden bg-gold cursor-crosshair">
       {/* 1px hairlines inside each 30px cell at its right and bottom edge */}
       <div
+        aria-hidden="true"
         className="absolute inset-0"
         style={{
           backgroundImage:
@@ -111,8 +112,9 @@ export default function App() {
         }}
       />
 
-      {/* Cursor trail layer */}
+      {/* Cursor trail layer — decorative, pointer-driven */}
       <div
+        aria-hidden="true"
         className="absolute inset-0 grid"
         style={{
           gridTemplateColumns: `repeat(${cols}, ${CELL}px)`,
@@ -125,6 +127,7 @@ export default function App() {
           return (
             <div
               key={i}
+              className="trail-cell"
               onMouseEnter={() => light(key, sampleGradient(i % cols, Math.floor(i / cols), w, h))}
               style={{
                 background: color || 'transparent',
@@ -148,7 +151,7 @@ export default function App() {
         </h1>
         <a
           href={`mailto:${EMAIL}`}
-          className="w-fit font-mono no-underline pointer-events-auto text-[rgba(26,26,26,0.65)] hover:text-ink"
+          className="w-fit font-mono no-underline pointer-events-auto text-[rgba(26,26,26,0.65)] transition-colors hover:text-ink focus-visible:text-ink focus-visible:outline-none focus-visible:[outline:2px_solid_var(--color-ink)] focus-visible:[outline-offset:3px]"
           style={{ fontSize: emailSize }}
         >
           {EMAIL}
@@ -156,26 +159,29 @@ export default function App() {
       </div>
 
       {/* Version links — 30×30 lattice cells, two rows above the bottom */}
-      <div className="absolute flex left-cell" style={{ top: versionsTop }}>
-        {VERSIONS.map(([label, href]) =>
+      <nav aria-label="Site versions" className="absolute flex left-cell" style={{ top: versionsTop }}>
+        {VERSIONS.map(([label, href, description]) =>
           href ? (
             <a
               key={label}
               href={href}
-              className="box-border flex size-cell items-center justify-center font-mono text-[11px] no-underline text-[rgba(26,26,26,0.4)] border-2 border-transparent hover:text-ink hover:font-bold hover:border-ink hover:bg-[rgba(26,26,26,0.07)]"
+              aria-label={description}
+              className="box-border flex size-cell items-center justify-center font-mono text-[11px] no-underline text-[rgba(26,26,26,0.4)] border-2 border-transparent transition-colors hover:text-ink hover:font-bold hover:border-ink hover:bg-[rgba(26,26,26,0.07)] focus-visible:text-ink focus-visible:font-bold focus-visible:border-ink focus-visible:bg-[rgba(26,26,26,0.07)] focus-visible:outline-none"
             >
               {label}
             </a>
           ) : (
             <span
               key={label}
+              aria-current="page"
+              aria-label={description}
               className="box-border flex size-cell items-center justify-center font-mono text-[11px] font-bold text-ink border-2 border-transparent"
             >
               {label}
             </span>
           ),
         )}
-      </div>
+      </nav>
     </div>
   )
 }

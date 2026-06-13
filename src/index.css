@@ -24,3 +24,12 @@ body {
   background: var(--color-gold);
   -webkit-font-smoothing: antialiased;
 }
+
+/* The cursor trail is pointer-driven, but honor users who opt out of motion:
+   pixels appear and clear instantly rather than fading. Overrides the inline
+   per-cell transition. */
+@media (prefers-reduced-motion: reduce) {
+  .trail-cell {
+    transition: none !important;
+  }
+}
