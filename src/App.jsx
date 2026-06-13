@@ -89,13 +89,30 @@ export default function App() {
   const cols = Math.ceil(w / CELL)
   const rows = Math.ceil(h / CELL)
 
-  const wordmarkSize = Math.max(40, Math.min(84, Math.round(w * 0.045)))
+  // The approved desktop scale. Below ~615px the wordmark box no longer fits
+  // the viewport at this floor, so fitSize pulls the size down (below 40) until
+  // the lattice box fits instead of clipping. On wider screens fitSize never
+  // binds and the size is exactly the approved clamp(40, 0.045w, 84).
+  const boxLeft = snap(w * 0.08)
+  const desktopSize = Math.max(40, Math.min(84, Math.round(w * 0.045)))
+  const maxBoxWidth = Math.floor((w - boxLeft - 2) / CELL) * CELL + 1
+  const fitSize = Math.floor((maxBoxWidth - 60) / 11.6)
+  const wordmarkSize = Math.max(16, Math.min(desktopSize, fitSize))
   const emailSize = wordmarkSize > 60 ? 16 : 13
+
+  // The approved height (wordmarkSize × 2.1) comfortably holds the stacked
+  // wordmark + email at every desktop size. At the small sizes mobile forces,
+  // that ratio can fall short of the content, so grow in lattice steps until
+  // it fits. The loop never runs for sizes ≥ 40, keeping desktop unchanged.
+  let boxHeight = snapSize(wordmarkSize * 2.1)
+  const contentHeight = wordmarkSize * 1.2 + 10 + emailSize * 1.2
+  while (boxHeight < contentHeight) boxHeight += CELL
+
   const box = {
-    left: snap(w * 0.08),
+    left: boxLeft,
     top: snap(h * 0.16),
     width: snapSize(wordmarkSize * 11.6 + 60),
-    height: snapSize(wordmarkSize * 2.1),
+    height: boxHeight,
   }
   const versionsTop = (Math.floor(h / CELL) - 2) * CELL
 
